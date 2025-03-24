@@ -88,4 +88,11 @@ end
 @test p1grad.u0 ≈ ones(3)
 testp2grad = zeros(3)
 testp2grad[variable_index(prob2, w)] = 1.0
+@test Zygote.unthunk(p2grad.u0) ≈ testp2grad
 @test p2grad.u0 ≈ testp2grad
+
+
+Zygote.gradient(prob1) do prob1
+    # SymbolicIndexingInterface.state_values(prob1, 1) +
+    SymbolicIndexingInterface.state_values(prob1, 1)
+end
