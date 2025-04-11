@@ -13,14 +13,6 @@ using SymbolicIndexingInterface: symbolic_type, NotSymbolic, variable_index, is_
 using RecursiveArrayTools
 import SciMLStructures
 
-@adjoint function SciMLBase.remake(prob::ODEFunction; kw...)
-    y = remake(prob; kw...)
-    function odefunction_remake_back(Δ)
-        (Δ,)
-    end
-    y, odefunction_remake_back
-end
-
 # This method resolves the ambiguity with the pullback defined in
 # RecursiveArrayToolsZygoteExt
 # https://github.com/SciML/RecursiveArrayTools.jl/blob/d06ecb856f43bc5e37cbaf50e5f63c578bf3f1bd/ext/RecursiveArrayToolsZygoteExt.jl#L67
