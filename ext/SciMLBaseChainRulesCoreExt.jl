@@ -6,6 +6,22 @@ import ChainRulesCore
 import ChainRulesCore: NoTangent, @non_differentiable, zero_tangent, rrule_via_ad
 using SymbolicIndexingInterface
 
+function Zygote.ChainRulesCore.rrule(::typeof(SciMLBase.remake), prob::ODEFunction; kw...)
+    y = remake(prob; kw...)
+    function odeprob_remake_pullback(Δ)
+        (Δ,)
+    end
+    y, odeprob_remake_pullback
+end
+
+function Zygote.ChainRulesCore.rrule(::typeof(SciMLBase.remake), prob::ODEProblem; kw...)
+    y = remake(prob; kw...)
+    function odeprob_remake_pullback(Δ)
+        (Δ,)
+    end
+    y, odeprob_remake_pullback
+end
+
 function ChainRulesCore.rrule(
         config::ChainRulesCore.RuleConfig{
             >:ChainRulesCore.HasReverseMode,
